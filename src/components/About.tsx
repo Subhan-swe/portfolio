@@ -14,27 +14,36 @@ export default function About() {
           <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-cyan-600 mx-auto rounded-full"></div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
+        <div className="space-y-16">
+
+          {/* Top Text Section */}
+          <div className="space-y-6 max-w-3xl mx-auto text-center">
             <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
               I'm a passionate Full-Stack Software Engineer with a strong focus on
               building scalable, user-centric web applications. With expertise in
               modern technologies and frameworks, I transform complex problems into
               elegant solutions.
             </p>
+
             <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
               My journey in software development has equipped me with a diverse skill
               set spanning frontend development, backend architecture, and database
               design. I'm committed to writing clean, maintainable code and staying
               current with industry best practices.
             </p>
-            <button className="flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg">
-              <Download className="w-5 h-5" />
-              <span>Download CV</span>
-            </button>
+
+            <div className="flex justify-center">
+              <button className="flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-200 hover:scale-105 shadow-lg">
+                <Download className="w-5 h-5" />
+                <span>Download CV</span>
+              </button>
+            </div>
           </div>
 
-          <div className="space-y-6">
+          {/* Bottom Cards Section */}
+          <div className="grid md:grid-cols-3 gap-6">
+
+            {/* Education */}
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
               <div className="flex items-start space-x-4">
                 <div className="p-3 bg-blue-600 rounded-lg">
@@ -54,6 +63,7 @@ export default function About() {
               </div>
             </div>
 
+            {/* Experience */}
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
               <div className="flex items-start space-x-4">
                 <div className="p-3 bg-cyan-600 rounded-lg">
@@ -73,6 +83,7 @@ export default function About() {
               </div>
             </div>
 
+            {/* Career Goals */}
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-gray-800 dark:to-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
               <div className="flex items-start space-x-4">
                 <div className="p-3 bg-blue-600 rounded-lg">
@@ -91,6 +102,7 @@ export default function About() {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
