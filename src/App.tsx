@@ -9,14 +9,16 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Navigation />
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Blog />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <Skills />
+        <Projects />
+        <Blog />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );

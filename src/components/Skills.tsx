@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { Code, Database, Layers, Wrench } from 'lucide-react';
 
 interface Skill {
@@ -8,116 +9,137 @@ interface Skill {
 interface SkillCategory {
   title: string;
   icon: typeof Code;
-  color: string;
   skills: Skill[];
 }
 
+const skillCategories: SkillCategory[] = [
+  {
+    title: 'Frontend',
+    icon: Code,
+    skills: [
+      { name: 'React / Next.js', level: 95 },
+      { name: 'TypeScript', level: 90 },
+      { name: 'Tailwind CSS', level: 95 },
+      { name: 'HTML5 / CSS3', level: 95 },
+    ],
+  },
+  {
+    title: 'Backend',
+    icon: Layers,
+    skills: [
+      { name: 'Node.js / Express', level: 85 },
+      { name: 'Python / Django', level: 80 },
+      { name: 'REST APIs', level: 90 },
+      { name: 'GraphQL', level: 75 },
+    ],
+  },
+  {
+    title: 'Database',
+    icon: Database,
+    skills: [
+      { name: 'PostgreSQL', level: 85 },
+      { name: 'MongoDB', level: 80 },
+      { name: 'Supabase', level: 90 },
+      { name: 'Redis', level: 70 },
+    ],
+  },
+  {
+    title: 'Tools & Others',
+    icon: Wrench,
+    skills: [
+      { name: 'Git / GitHub', level: 90 },
+      { name: 'Docker', level: 75 },
+      { name: 'AWS / Cloud', level: 70 },
+      { name: 'CI/CD', level: 75 },
+    ],
+  },
+];
+
+function SkillBar({ name, level, isVisible }: { name: string; level: number; isVisible: boolean }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <span className="text-sm font-medium text-foreground">{name}</span>
+        <span className="text-xs font-mono text-muted-foreground">{level}%</span>
+      </div>
+      <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+        <div
+          className="h-full rounded-full bg-accent skill-bar"
+          style={{ width: isVisible ? `${level}%` : '0%' }}
+        />
+      </div>
+    </div>
+  );
+}
+
 export default function Skills() {
-  const skillCategories: SkillCategory[] = [
-    {
-      title: 'Frontend',
-      icon: Code,
-      color: 'blue',
-      skills: [
-        { name: 'React / Next.js', level: 95 },
-        { name: 'TypeScript', level: 90 },
-        { name: 'Tailwind CSS', level: 95 },
-        { name: 'HTML5 / CSS3', level: 95 },
-      ],
-    },
-    {
-      title: 'Backend',
-      icon: Layers,
-      color: 'cyan',
-      skills: [
-        { name: 'Node.js / Express', level: 85 },
-        { name: 'Python / Django', level: 80 },
-        { name: 'REST APIs', level: 90 },
-        { name: 'GraphQL', level: 75 },
-      ],
-    },
-    {
-      title: 'Database',
-      icon: Database,
-      color: 'blue',
-      skills: [
-        { name: 'PostgreSQL', level: 85 },
-        { name: 'MongoDB', level: 80 },
-        { name: 'Supabase', level: 90 },
-        { name: 'Redis', level: 70 },
-      ],
-    },
-    {
-      title: 'Tools & Others',
-      icon: Wrench,
-      color: 'cyan',
-      skills: [
-        { name: 'Git / GitHub', level: 90 },
-        { name: 'Docker', level: 75 },
-        { name: 'AWS / Cloud', level: 70 },
-        { name: 'CI/CD', level: 75 },
-      ],
-    },
-  ];
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
       id="skills"
-      className="py-20 bg-gradient-to-br from-blue-50 via-white to-cyan-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 transition-colors duration-200"
+      ref={sectionRef}
+      className="section-padding bg-section-alt transition-colors duration-200"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            Skills & Expertise
+      <div className="container-narrow">
+        {/* Section Header */}
+        <div className="flex flex-col gap-4 mb-16">
+          <p className="text-sm font-mono font-medium tracking-widest uppercase text-accent">
+            Expertise
+          </p>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground text-balance">
+            {'Skills & Technologies'}
           </h2>
-          <div className="w-20 h-1 bg-gradient-to-r from-blue-600 to-cyan-600 mx-auto rounded-full"></div>
-          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            A comprehensive skill set built through years of hands-on experience and
-            continuous learning
+          <div className="w-12 h-1 rounded-full bg-accent" />
+          <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+            A comprehensive skill set built through hands-on experience and
+            continuous learning.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {skillCategories.map((category, idx) => {
+        {/* Skill Categories */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {skillCategories.map((category) => {
             const Icon = category.icon;
             return (
               <div
-                key={idx}
-                className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-800 hover:shadow-xl transition-all duration-300"
+                key={category.title}
+                className="p-8 rounded-2xl bg-card border border-border/50 hover-lift"
               >
-                <div className="flex items-center space-x-3 mb-6">
-                  <div
-                    className={`p-3 bg-${category.color}-600 rounded-lg`}
-                    style={{
-                      backgroundColor:
-                        category.color === 'blue' ? '#2563eb' : '#0891b2',
-                    }}
-                  >
-                    <Icon className="w-6 h-6 text-white" />
+                <div className="flex items-center gap-3 mb-8">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-accent" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {category.title}
-                  </h3>
+                  <h3 className="text-xl font-bold text-foreground">{category.title}</h3>
                 </div>
 
-                <div className="space-y-4">
-                  {category.skills.map((skill, skillIdx) => (
-                    <div key={skillIdx}>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-gray-700 dark:text-gray-300 font-medium">
-                          {skill.name}
-                        </span>
-                        <span className="text-gray-500 dark:text-gray-400">
-                          {skill.level}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 transition-all duration-1000 ease-out"
-                          style={{ width: `${skill.level}%` }}
-                        ></div>
-                      </div>
-                    </div>
+                <div className="flex flex-col gap-5">
+                  {category.skills.map((skill) => (
+                    <SkillBar
+                      key={skill.name}
+                      name={skill.name}
+                      level={skill.level}
+                      isVisible={isVisible}
+                    />
                   ))}
                 </div>
               </div>
